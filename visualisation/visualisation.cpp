@@ -33,12 +33,18 @@ void Visualisation::affichage(){
 }
 
 void Visualisation::loopEvent() {
-
+    bool sim = false;
     if (window) {
         int close = 0;
         affichage();
         while (!close) {
             // Events management
+            if( sim){
+                if(!G->seuil(0.95)) {
+                    G->MAJGrille();
+                    affichage();
+                }
+            }
             while (SDL_PollEvent(&event)) {
                 //
                 switch (event.type) {
@@ -50,11 +56,12 @@ void Visualisation::loopEvent() {
                     case SDL_KEYDOWN:
                         switch (event.key.keysym.sym) {
                             case SDLK_a:
-                                while(!G->seuil(0.95)) {
-                                    G->MAJGrille();
-                                    affichage();
-                                }
-
+                                sim = !sim;
+                                break;
+                            case SDLK_z:
+                                G->MAJGrille();
+                                affichage();
+                                break;
                         }
                 }
             }

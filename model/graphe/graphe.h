@@ -15,8 +15,8 @@ enum class typeCellue{
 class Graphe {
 public:
     Graphe(int size,typeCellue);
-    Graphe(int size,typeCellue,int lambda);
-    Graphe(int size,typeCellue c,int lambda,double* precalcul);
+    Graphe(int size,typeCellue,double lambda);
+    Graphe(int size,typeCellue c,double lambda,double* precalcul);
 
     void reset();
 
@@ -30,7 +30,7 @@ public:
     int nbDef();
     int nbCellule();
 
-    void setLamba(int lambda);
+    void setLamba(double lambda);
     void setPreCalcul(double* precalcul);
 
 private:

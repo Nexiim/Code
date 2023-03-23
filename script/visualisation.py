@@ -24,9 +24,9 @@ if len(sys.argv) == 2 :
 			abs.append(float(element[0]))
 			
 		
-		plt.plot(abs,ord,label = Value)
+		plt.plot(abs,ord,label = str(Value))
 		#plt.ylim(min,max)
-	plt.legend(bbox_to_anchor =(0.75, 1.15), ncol = nbCourbe)
+	plt.legend(bbox_to_anchor =(1, 1.15), ncol = nbCourbe)
 	plt.show()
 else:
 	print ('veuiller choisir un fichier à afficher')

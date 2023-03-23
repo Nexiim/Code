@@ -14,14 +14,14 @@ Graphe::Graphe(int size,typeCellue c) {
     }
     this->threshold = 0;
 }
-Graphe::Graphe(int size,typeCellue c,int lambda) {
+Graphe::Graphe(int size,typeCellue c,double lambda) {
     this->c = c;
     for (int i = 0; i < size; i++) {
         if (c == typeCellue::QUOROMD) this->listeCellules.push_back(new CelluleQuoromD(lambda));
     }
     this->threshold = 0;
 }
-Graphe::Graphe(int size,typeCellue c,int lambda,double* precalcul) {
+Graphe::Graphe(int size,typeCellue c,double lambda,double* precalcul) {
     this->c = c;
     for (int i = 0; i < size; i++) {
         if (c == typeCellue::QUOROMD) this->listeCellules.push_back(new CelluleQuoromD(lambda,precalcul));
@@ -71,7 +71,7 @@ int Graphe::nbCellule() {
     return listeCellules.size();
 }
 
-void Graphe::setLamba(int lambda) {
+void Graphe::setLamba(double lambda) {
     if (this->c == typeCellue::QUOROMD){
         for (int i = 0; i < this->listeCellules.size(); i++){
             CelluleQuoromD* cell = static_cast<CelluleQuoromD*>(getCellule(i));

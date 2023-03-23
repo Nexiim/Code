@@ -4,12 +4,16 @@
 
 #include "celluleQuoromD.h"
 
-CelluleQuoromD::CelluleQuoromD(int lambda) : Cellule(){
-    this->lambda = lambda;
-    this->preCalculExp = NULL;
+CelluleQuoromD::CelluleQuoromD() : Cellule(){
+    this->preCalculExp = nullptr;
 }
 
-CelluleQuoromD::CelluleQuoromD(int lambda, double *preCalculExp) {
+CelluleQuoromD::CelluleQuoromD(double lambda) : Cellule(){
+    this->lambda = lambda;
+    this->preCalculExp = nullptr;
+}
+
+CelluleQuoromD::CelluleQuoromD(double lambda, double *preCalculExp) {
     this->lambda = lambda;
     this->preCalculExp = preCalculExp;
 }
@@ -46,7 +50,7 @@ void CelluleQuoromD::transition(){
     }
 }
 
-void CelluleQuoromD::setLambda(int lambda) {
+void CelluleQuoromD::setLambda(double lambda) {
     this->lambda = lambda;
 }
 

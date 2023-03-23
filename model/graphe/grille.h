@@ -12,10 +12,10 @@
 class Grille : public Graphe {
 public:
     Grille(int width, int height,typeCellue c);
-    Grille(int width, int height,typeCellue c,int lambda);
-    Grille(int width, int height,typeCellue c,int lambda,double* preCalcul);
+    Grille(int width, int height,typeCellue c,double lambda);
+    Grille(int width, int height,typeCellue c,double lambda,double* preCalcul);
 
-    void reset(double proba,int lambda,double* precalcul);
+    void reset(double proba,double lambda,double* precalcul);
 
     Cellule *getCellule(int i, int j);
 

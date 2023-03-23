@@ -9,18 +9,18 @@
 
 class CelluleQuoromD : public Cellule {
 public:
-    CelluleQuoromD(int lambda);
-    CelluleQuoromD(int lambda,double* preCalculExp);
-    CelluleQuoromD(){};
+    CelluleQuoromD(double lambda);
+    CelluleQuoromD(double lambda,double* preCalculExp);
+    CelluleQuoromD();
 
     void transition();
 
-    void setLambda(int lambda);
+    void setLambda(double lambda);
     int getLambda();
     void setPreCalcul(double* preCalcul);
 
 private:
-    int lambda;
+    double lambda;
     double* preCalculExp;
 
 };

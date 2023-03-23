@@ -15,33 +15,47 @@ using namespace std;
 int main() {
 
     srand(time(NULL));
-    int T[4] = {sizeof(T) / sizeof(*T)-1,3000,5000,10000};
+    int T[2] = {sizeof(T) / sizeof(*T)-1,1000};
     //probabilité de défaillance
     double P[16];
     P[0] = sizeof(P) / sizeof(*P)-1;
     for (int i = 1 ; i <= P[0]; i++){
         P[i] = (i-1)*0.01;
     }
-    int LAMBDA[2] = {sizeof(LAMBDA) / sizeof(*LAMBDA)-1,5};
+    double LAMBDA[5] = {sizeof(LAMBDA) / sizeof(*LAMBDA)-1,5,1,0.5,0.1};
 
     clock_t debut, fin;
     debut = clock();
     SimulationQuoromD s(T,100,P,Voisinage::MOORE8,THRESHOLD,H,W,LAMBDA);
-    s.start(TMPMAX);
+    s.start(Focus::LAMBDA);
     fin = clock();
     cout << "Temps ecoule en secondes : " <<(fin - debut)/CLOCKS_PER_SEC<< endl ;
 
 
 
 
-    /* Grille G(W, H,typeCellue::QUOROMD);
+   /* Grille G(W, H,typeCellue::QUOROMD);
      G.setLamba(LAMBDA[1]);
      G.setVoisinage(Voisinage::MOORE8);
      G.setCelluleDef(FAILURERATE);
-     G.affichageGrille();
-     G.MAJGrille();
-     G.MAJGrille();
-     G.affichageGrille();
+     //G.setPreCalcul(listExp);
+
+     Visualisation v(H,W,&G);
+     v.initVisualisation();
+     v.loopEvent();*/
+
+     /*G.affichageGrille();
+     int x = 5;
+     int y = 0;
+    /*for (int a = 0; a < G.getCellule(x,y)->nbVoisin(); a++){
+        G.getCellule(x,y)->getVoisin(a)->setEtat(Etat::DEFAILANTE);
+    }*/
+    /*for (int j = 0; j <10 ;j++) {
+        for (int i = 0; i < 10; i++) {
+            G.MAJGrille();
+        }
+        G.affichageGrille();
+    }*/
 
      /*int x,y;
      for(int i = 0; i < W; i++){
@@ -51,7 +65,18 @@ int main() {
                  y = j;
              }
          }
-     }*/
+     }
+     cout <<"i : "<<x <<"j :"<< y << endl;
+     for (int a = 0; a < G.getCellule(x,y)->nbVoisin(); a++){
+         cout << G.getCellule(x,y)->getVoisin(a)->getEtat() << endl ;
+     }
+    G.MAJGrille();
+    G.affichageGrille();
+
+    for (int a = 0; a < G.getCellule(x,y)->nbVoisin(); a++){
+        cout << G.getCellule(x,y)->getVoisin(a)->getEtat() << endl ;
+    }*/
+
 
     //cout << "i: "<< x << "j: "<< y ;
 
@@ -69,9 +94,7 @@ int main() {
      }
      cout << endl;*/
 
-    /*Visualisation v(H,W,&G);
-    v.initVisualisation();
-    v.loopEvent();*/
+
 
     return 0;
 }

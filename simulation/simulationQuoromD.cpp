@@ -6,7 +6,7 @@
 
 
 SimulationQuoromD::SimulationQuoromD(int *T, int nbTest, double *probaDef, Voisinage v, double threshold, int height,
-                                     int width, int *lambda) : Simulation(T, nbTest, probaDef, threshold) {
+                                     int width, double *lambda) : Simulation(T, nbTest, probaDef, threshold) {
     this->v = v;
     this->lambda = lambda;
     this->nbTest = nbTest;
@@ -70,16 +70,16 @@ void SimulationQuoromD::simulationLambda() {
         if (this->file) { // si l'ouverture a réussi
             this->writeFile(to_string(T[0]));
             for (int i = 1; i <= lambda[0]; i++) {
+                //précalcule des différentes valeurs de probabilité pour QuoromD
+                if (listExp != nullptr) free(listExp);
+                calculeExp(lambda[a],v);
                 this->writeFile(to_string(lambda[i]));
                 for (int j = 1; j <= probaDef[0]; j++) {
                     succes = 0;
                     for (int k = 0; k < nbTest; k++) {
                         nbIter = 0;
                         //On réinitialise le graphe correctement
-                        G->Graphe::reset();
-                        G->setVoisinage(v);
-                        G->setCelluleDef(probaDef[j]);
-                        G->setLamba(lambda[i]);
+                        G->reset(probaDef[j], lambda[i], listExp);
 
                         while (nbIter < T[a]) {
                             G->MAJGrille();
@@ -206,7 +206,7 @@ void SimulationQuoromD::startDensitySim() {
     }
 }
 
-void SimulationQuoromD::calculeExp(int lambda, Voisinage v) {
+void SimulationQuoromD::calculeExp(double lambda, Voisinage v) {
     int nbVoisin = 0;
     if (v == Voisinage::MOORE8) nbVoisin = 8;
     else if (v == Voisinage::MOORE9) nbVoisin = 9;

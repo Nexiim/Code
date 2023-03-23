@@ -11,11 +11,11 @@ Grille::Grille(int witdh, int height,typeCellue c) : Graphe(witdh * height,c) {
     this->c =c;
 }
 
-Grille::Grille(int witdh, int height,typeCellue c,int lambda) : Graphe(witdh * height,c,lambda) {
+Grille::Grille(int witdh, int height,typeCellue c,double lambda) : Graphe(witdh * height,c,lambda) {
     Grille(witdh,height,c);
 }
 
-Grille::Grille(int witdh, int height,typeCellue c,int lambda,double* precalcul) : Graphe(witdh * height,c,lambda, precalcul) {
+Grille::Grille(int witdh, int height,typeCellue c,double lambda,double* precalcul) : Graphe(witdh * height,c,lambda, precalcul) {
     Grille(witdh,height,c);
 }
 
@@ -127,7 +127,7 @@ void Grille::setVoisinage(Voisinage v) {
     else cout << " erreur setup voisinage";
 }
 
-void Grille::reset(double proba, int lambda, double *precalcul) {
+void Grille::reset(double proba, double lambda, double *precalcul) {
     for (int i = 0; i < this->width; i++) {
         for (int j = 0; j < this->height; j++) {
             auto* cell = dynamic_cast<CelluleQuoromD*>(getCellule(i,j));

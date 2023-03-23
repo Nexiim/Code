@@ -5,6 +5,7 @@
 
 /*Fonction lié au voisin de la cellule*/
 
+Cellule::Cellule() {}
 
 void Cellule::addVoisin(Cellule* c) {
     this->voisins.emplace_back(c);
@@ -45,11 +46,7 @@ void Cellule::nextT() {
     }
 }
 
-Cellule::Cellule() {}
-
-void Cellule::transition() {
-
-}
+void Cellule::transition() {}
 
 void Cellule::setNbVoisinMax(Voisinage v) {
     if (v == Voisinage::MOORE8) this->nbVoisinMax = 8;
