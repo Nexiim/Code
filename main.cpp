@@ -15,19 +15,19 @@ using namespace std;
 int main() {
 
     srand(time(NULL));
-    int T[2] = {sizeof(T) / sizeof(*T)-1,1000};
+    int T[4] = {sizeof(T) / sizeof(*T)-1,1000,2000,5000};
     //probabilité de défaillance
     double P[16];
     P[0] = sizeof(P) / sizeof(*P)-1;
     for (int i = 1 ; i <= P[0]; i++){
         P[i] = (i-1)*0.01;
     }
-    double LAMBDA[5] = {sizeof(LAMBDA) / sizeof(*LAMBDA)-1,5,1,0.5,0.1};
+    double LAMBDA[2] = {sizeof(LAMBDA) / sizeof(*LAMBDA)-1,2};
 
     clock_t debut, fin;
     debut = clock();
     SimulationQuoromD s(T,100,P,Voisinage::MOORE8,THRESHOLD,H,W,LAMBDA);
-    s.start(Focus::LAMBDA);
+    s.start(Focus::TMPMAX);
     fin = clock();
     cout << "Temps ecoule en secondes : " <<(fin - debut)/CLOCKS_PER_SEC<< endl ;
 

@@ -14,8 +14,10 @@ public:
 
     void start();
     void start(Focus f);
+
     void startDensitySim();
     void startDensitySim(Focus f);
+
     void calculeExp(double lambda, Voisinage v);
 
 private:
@@ -26,7 +28,6 @@ private:
 
     void simulationT();
     void simulationLambda();
-    void simulationProbadef();
 
     void simulationDensityT();
     void simulationDensityLambda();

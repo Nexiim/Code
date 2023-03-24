@@ -13,7 +13,6 @@ SimulationQuoromD::SimulationQuoromD(int *T, int nbTest, double *probaDef, Voisi
     this->G = new Grille(width, height,typeCellue::QUOROMD);
     this->G->setVoisinage(v);
     this->listExp = nullptr;
-
 }
 
 void SimulationQuoromD::start() {
@@ -22,16 +21,19 @@ void SimulationQuoromD::start() {
 
     for (int i = 1; i <= T[0]; i++) {
         for (int a = 1; a <= lambda[0]; a++) {
-            G->setLamba(lambda[a]);
+            //précalcule des différentes valeurs de probabilité pour QuoromD
+            if (listExp != nullptr) free(listExp);
+            calculeExp(lambda[i],v);
+
             this->openFile("QuoromDLambda" + to_string(lambda[a]) + "T" + to_string(T[i]) + ".txt");
+
             this->writeFile(to_string(1));
             if (this->file) { // si l'ouverture a réussi
                 for (int j = 1; j <= probaDef[0]; j++) {
-                    G->Graphe::reset();
-                    G->setVoisinage(v);
-                    G->setCelluleDef(probaDef[i]);
                     nbIter = 0;
                     succes = 0;
+                    //On réinitialise le graphe correctement
+                    G->reset(probaDef[j], lambda[i], listExp);
 
                     for (int k = 0; k < nbTest; k++) {
                         while (nbIter < T[i]) {
@@ -55,11 +57,6 @@ void SimulationQuoromD::start() {
 void SimulationQuoromD::start(Focus f) {
     if (f == LAMBDA) simulationLambda();
     else if (f == TMPMAX) simulationT();
-    else if (f == PROBADEF) simulationProbadef();
-}
-
-void SimulationQuoromD::simulationProbadef() {
-
 }
 
 void SimulationQuoromD::simulationLambda() {
@@ -72,12 +69,13 @@ void SimulationQuoromD::simulationLambda() {
             for (int i = 1; i <= lambda[0]; i++) {
                 //précalcule des différentes valeurs de probabilité pour QuoromD
                 if (listExp != nullptr) free(listExp);
-                calculeExp(lambda[a],v);
+                calculeExp(lambda[i],v);
                 this->writeFile(to_string(lambda[i]));
                 for (int j = 1; j <= probaDef[0]; j++) {
                     succes = 0;
                     for (int k = 0; k < nbTest; k++) {
                         nbIter = 0;
+
                         //On réinitialise le graphe correctement
                         G->reset(probaDef[j], lambda[i], listExp);
 
@@ -153,15 +151,147 @@ void SimulationQuoromD::startDensitySim(Focus f) {
 }
 
 void SimulationQuoromD::simulationDensityT() {
+    for (int a = 1; a <= lambda[0]; a++) {
+        for (int j = 1; j <= probaDef[0]; j++) {
 
+        this->openFile("QuoromDDensity"+ ToString(v)+"Lambda" + to_string(lambda[a]) + "TMultipleProbaDef"+to_string(probaDef[j]) +".txt");
+        this->writeFile(to_string(T[0]));
+
+        for (int i = 1; i <= T[0]; i++) {
+            this->writeFile(to_string(T[i]));
+
+                if (this->file) { // si l'ouverture a réussi
+
+                    //On réinitialise le graphe correctement
+                    G->reset(probaDef[j], lambda[a], listExp);
+
+                    string s = to_string(0) + "," +
+                               to_string((double) G->nbAlerte() / ((double) (G->nbCellule() - G->nbDef())));
+                    this->writeFile(s);
+
+                    int nbIter = 1;
+                    int cpt = 11;
+                    for (int k = 0; k < nbTest; k++) {
+                        while (nbIter < T[i]) {
+                            G->MAJGrille();
+                            if (cpt < 10) {
+                                cpt++;
+                                if (cpt == 10) nbIter = T[i];
+                            } else if (G->seuil(threshold)) {
+                                string s = to_string(nbIter) + "," +
+                                           to_string((double) G->nbAlerte() / ((double) (G->nbCellule() - G->nbDef())));
+                                this->writeFile(s);
+                                cpt = 0;
+                                break;
+                            }
+                            string s = to_string(nbIter) + "," +
+                                       to_string((double) G->nbAlerte() / ((double) (G->nbCellule() - G->nbDef())));
+                            this->writeFile(s);
+                            nbIter++;
+                        }
+                    }
+                }
+            this->writeFile("-");
+            }
+            this->closeFile();
+        }
+    }
 }
 
 void SimulationQuoromD::simulationDensityProbadef() {
+    for (int a = 1; a <= lambda[0]; a++) {
+        for (int i = 1; i <= T[0]; i++) {
 
+            this->openFile("QuoromDDensity"+ ToString(v)+"LambdaMultipleT"+to_string(T[i])+"ProbaDefMultiple.txt");
+            this->writeFile(to_string(probaDef[0]));
+
+            for (int j = 1; j <= probaDef[0]; j++) {
+                this->writeFile(to_string(probaDef[j]));
+
+                if (this->file) { // si l'ouverture a réussi
+
+                    //On réinitialise le graphe correctement
+                    G->reset(probaDef[j], lambda[a], listExp);
+
+                    string s = to_string(0) + "," +
+                               to_string((double) G->nbAlerte() / ((double) (G->nbCellule() - G->nbDef())));
+                    this->writeFile(s);
+
+                    int nbIter = 1;
+                    int cpt = 11;
+                    for (int k = 0; k < nbTest; k++) {
+                        while (nbIter < T[i]) {
+                            G->MAJGrille();
+                            if (cpt < 10) {
+                                cpt++;
+                                if (cpt == 10) nbIter = T[i];
+                            } else if (G->seuil(threshold)) {
+                                string s = to_string(nbIter) + "," +
+                                           to_string((double) G->nbAlerte() / ((double) (G->nbCellule() - G->nbDef())));
+                                this->writeFile(s);
+                                cpt = 0;
+                                break;
+                            }
+                            string s = to_string(nbIter) + "," +
+                                       to_string((double) G->nbAlerte() / ((double) (G->nbCellule() - G->nbDef())));
+                            this->writeFile(s);
+                            nbIter++;
+                        }
+                    }
+                }
+                this->writeFile("-");
+            }
+            this->closeFile();
+        }
+    }
 }
 
 void SimulationQuoromD::simulationDensityLambda() {
+        for (int j = 1; j <= probaDef[0]; j++) {
+            for (int i = 1; i <= T[0]; i++) {
 
+            this->openFile("QuoromDDensity"+ ToString(v)+"LambdaMultipleT"+to_string(T[i])+"ProbaDef"+to_string(probaDef[j]) +".txt");
+            this->writeFile(to_string(lambda[0]));
+
+                for (int a = 1; a <= lambda[0]; a++) {
+                this->writeFile(to_string(lambda[a]));
+
+                if (this->file) { // si l'ouverture a réussi
+
+                    //On réinitialise le graphe correctement
+                    G->reset(probaDef[j], lambda[a], listExp);
+
+                    string s = to_string(0) + "," +
+                               to_string((double) G->nbAlerte() / ((double) (G->nbCellule() - G->nbDef())));
+                    this->writeFile(s);
+
+                    int nbIter = 1;
+                    int cpt = 11;
+                    for (int k = 0; k < nbTest; k++) {
+                        while (nbIter < T[i]) {
+                            G->MAJGrille();
+                            if (cpt < 10) {
+                                cpt++;
+                                if (cpt == 10) nbIter = T[i];
+                            } else if (G->seuil(threshold)) {
+                                string s = to_string(nbIter) + "," +
+                                           to_string((double) G->nbAlerte() / ((double) (G->nbCellule() - G->nbDef())));
+                                this->writeFile(s);
+                                cpt = 0;
+                                break;
+                            }
+                            string s = to_string(nbIter) + "," +
+                                       to_string((double) G->nbAlerte() / ((double) (G->nbCellule() - G->nbDef())));
+                            this->writeFile(s);
+                            nbIter++;
+                        }
+                    }
+                }
+                this->writeFile("-");
+            }
+            this->closeFile();
+        }
+    }
 }
 
 void SimulationQuoromD::startDensitySim() {
