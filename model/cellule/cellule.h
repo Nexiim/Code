@@ -28,7 +28,7 @@ class Cellule{
         Etat getEtat();
         void setEtat(Etat e);
 
-        void setNbVoisinMax(Voisinage v);
+        void setNbVoisinMax(VoisinageClassique v);
 
         virtual void transition();
         void nextT();

@@ -27,7 +27,6 @@ public:
 
 private:
 
-
 protected:
     ofstream file;
     int nbTest;

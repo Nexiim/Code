@@ -2,13 +2,14 @@
 #include "simulation/simulation.h"
 #include "simulation/simulationQuoromD.h"
 #include "visualisation/visualisation.h"
+#include "model/Voisinage/Voisinage.h"
 
 #include <unistd.h>
 
 using namespace std;
 
-#define H 50
-#define W 50
+#define H 500
+#define W 500
 #define FAILURERATE 0.06
 #define THRESHOLD 0.95
 
@@ -24,19 +25,39 @@ int main() {
     }
     double LAMBDA[2] = {sizeof(LAMBDA) / sizeof(*LAMBDA)-1,2};
 
-    clock_t debut, fin;
+    Grille G(W, H,typeCellue::QUOROMD);
+    Voisinage v = Voisinage(&G);
+    v.setVoisinageNorme(20);
+
+    int x = 250;
+    int y = 250;
+
+    for (int a = 0; a < G.getCellule(x,y)->nbVoisin(); a++){
+        if (G.getCellule(x,y)->getVoisin(a)->getEtat() == Etat::NORMAL)
+            G.getCellule(x,y)->getVoisin(a)->setEtat(Etat::ALERTE);
+        else
+            G.getCellule(x,y)->getVoisin(a)->setEtat(Etat::DEFAILANTE);
+    }
+    Visualisation visu(H,W,&G);
+    visu.initVisualisation();
+    visu.loopEvent();
+
+
+
+    /*clock_t debut, fin;
     debut = clock();
-    SimulationQuoromD s(T,100,P,Voisinage::MOORE8,THRESHOLD,H,W,LAMBDA);
+    SimulationQuoromD s(T, 100, P, VoisinageClassique::MOORE8, THRESHOLD, H, W, LAMBDA);
     s.start(Focus::TMPMAX);
     fin = clock();
-    cout << "Temps ecoule en secondes : " <<(fin - debut)/CLOCKS_PER_SEC<< endl ;
+    cout << "Temps ecoule en secondes : " <<(fin - debut)/CLOCKS_PER_SEC<< endl ;*/
+
 
 
 
 
    /* Grille G(W, H,typeCellue::QUOROMD);
      G.setLamba(LAMBDA[1]);
-     G.setVoisinage(Voisinage::MOORE8);
+     G.setVoisinage(VoisinageClassique::MOORE8);
      G.setCelluleDef(FAILURERATE);
      //G.setPreCalcul(listExp);
 

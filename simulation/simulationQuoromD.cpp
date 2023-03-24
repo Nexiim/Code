@@ -5,7 +5,7 @@
 #include "simulationQuoromD.h"
 
 
-SimulationQuoromD::SimulationQuoromD(int *T, int nbTest, double *probaDef, Voisinage v, double threshold, int height,
+SimulationQuoromD::SimulationQuoromD(int *T, int nbTest, double *probaDef, VoisinageClassique v, double threshold, int height,
                                      int width, double *lambda) : Simulation(T, nbTest, probaDef, threshold) {
     this->v = v;
     this->lambda = lambda;
@@ -356,12 +356,12 @@ void SimulationQuoromD::startDensitySim() {
     }
 }
 
-void SimulationQuoromD::calculeExp(double lambda, Voisinage v) {
+void SimulationQuoromD::calculeExp(double lambda, VoisinageClassique v) {
     int nbVoisin = 0;
-    if (v == Voisinage::MOORE8) nbVoisin = 8;
-    else if (v == Voisinage::MOORE9) nbVoisin = 9;
-    else if (v == Voisinage::TOOM) nbVoisin = 3;
-    else if (v == Voisinage::VONNEUMAN) nbVoisin = 4;
+    if (v == VoisinageClassique::MOORE8) nbVoisin = 8;
+    else if (v == VoisinageClassique::MOORE9) nbVoisin = 9;
+    else if (v == VoisinageClassique::TOOM) nbVoisin = 3;
+    else if (v == VoisinageClassique::VONNEUMAN) nbVoisin = 4;
 
     this->listExp = (double *) malloc(sizeof(double) * (nbVoisin + 1) * (nbVoisin + 1));
     // nombre de cellules voisinnes normales

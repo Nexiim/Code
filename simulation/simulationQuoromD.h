@@ -10,7 +10,7 @@
 
 class SimulationQuoromD : public Simulation{
 public:
-    SimulationQuoromD(int* T, int nbTest , double* probaDef, Voisinage v, double threshold, int height, int width, double* lambda);
+    SimulationQuoromD(int* T, int nbTest , double* probaDef, VoisinageClassique v, double threshold, int height, int width, double* lambda);
 
     void start();
     void start(Focus f);
@@ -18,11 +18,11 @@ public:
     void startDensitySim();
     void startDensitySim(Focus f);
 
-    void calculeExp(double lambda, Voisinage v);
+    void calculeExp(double lambda, VoisinageClassique v);
 
 private:
     Grille *G;
-    Voisinage v;
+    VoisinageClassique v;
     double* lambda;
     double* listExp;
 

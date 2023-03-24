@@ -58,7 +58,7 @@ void Grille::affichageGrille() {
 void Grille::Moore8() {
     for (int i = 0; i < this->width; i++) {
         for (int j = 0; j < this->height; j++) {
-            this->getCellule(i,j)->setNbVoisinMax(Voisinage::MOORE8);
+            this->getCellule(i,j)->setNbVoisinMax(VoisinageClassique::MOORE8);
             for (int a = -1; a < 2; a++) {
                 for (int b = -1; b < 2; b++) {
                     if (a != 0 || b != 0) {
@@ -76,7 +76,7 @@ void Grille::Moore8() {
 void Grille::Moore9() {
     for (int i = 0; i < this->width; i++) {
         for (int j = 0; j < this->height; j++) {
-            this->getCellule(i,j)->setNbVoisinMax(Voisinage::MOORE9);
+            this->getCellule(i,j)->setNbVoisinMax(VoisinageClassique::MOORE9);
             for (int a = -1; a < 2; a++) {
                 for (int b = -1; b < 2; b++) {
                     if (((i + a) >= 0) & ((i + a) <= (this->width - 1)) & ((j + b) >= 0) &
@@ -92,7 +92,7 @@ void Grille::Moore9() {
 void Grille::VonNeumann() {
     for (int i = 0; i < this->width; i++) {
         for (int j = 0; j < this->height; j++) {
-            this->getCellule(i,j)->setNbVoisinMax(Voisinage::VONNEUMAN);
+            this->getCellule(i,j)->setNbVoisinMax(VoisinageClassique::VONNEUMAN);
             this->getCellule(i, j)->addVoisin(this->getCellule(i, j));
             for (int a = -1; a < 2; a++) {
                 for (int b = -1; b < 2; b++) {
@@ -111,7 +111,7 @@ void Grille::VonNeumann() {
 void Grille::Toom() {
     for (int i = 0; i < this->width; i++) {
         for (int j = 0; j < this->height; j++) {
-            this->getCellule(i,j)->setNbVoisinMax(Voisinage::TOOM);
+            this->getCellule(i,j)->setNbVoisinMax(VoisinageClassique::TOOM);
             this->getCellule(i, j)->addVoisin(this->getCellule(i, j));
             if (i + 1 < this->width) this->getCellule(i, j)->addVoisin(this->getCellule(i + 1, j));
             if (j - 1 >= 0) this->getCellule(i, j)->addVoisin(this->getCellule(i, j - 1));
@@ -119,11 +119,11 @@ void Grille::Toom() {
     }
 }
 
-void Grille::setVoisinage(Voisinage v) {
-    if (v == Voisinage::MOORE8) this->Moore8();
-    else if (v == Voisinage::MOORE9) this->Moore9();
-    else if (v == Voisinage::TOOM) this->Toom();
-    else if (v == Voisinage::VONNEUMAN) this->VonNeumann();
+void Grille::setVoisinage(VoisinageClassique v) {
+    if (v == VoisinageClassique::MOORE8) this->Moore8();
+    else if (v == VoisinageClassique::MOORE9) this->Moore9();
+    else if (v == VoisinageClassique::TOOM) this->Toom();
+    else if (v == VoisinageClassique::VONNEUMAN) this->VonNeumann();
     else cout << " erreur setup voisinage";
 }
 
@@ -141,4 +141,12 @@ void Grille::reset(double proba, double lambda, double *precalcul) {
         }
     }
     this->threshold = 0;
+}
+
+int Grille::getWidth() {
+    return this->width;
+}
+
+int Grille::getHeight() {
+    return this->height;
 }

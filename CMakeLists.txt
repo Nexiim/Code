@@ -14,5 +14,5 @@ endif()
 
 include_directories(${SDL2_INCLUDE_DIRS})
 
-add_executable(Code main.cpp model/cellule/cellule.h model/cellule/cellule.cpp model/graphe/graphe.h model/graphe/graphe.cpp visualisation/visualisation.cpp visualisation/visualisation.h simulation/simulation.cpp simulation/simulation.h simulation/simulationQuoromD.cpp simulation/simulationQuoromD.h model/cellule/celluleQuoromD.cpp model/cellule/celluleQuoromD.h model/graphe/grille.cpp model/graphe/grille.h model/struct/struct.h model/struct/struct.cpp)
+add_executable(Code main.cpp model/cellule/cellule.h model/cellule/cellule.cpp model/graphe/graphe.h model/graphe/graphe.cpp visualisation/visualisation.cpp visualisation/visualisation.h simulation/simulation.cpp simulation/simulation.h simulation/simulationQuoromD.cpp simulation/simulationQuoromD.h model/cellule/celluleQuoromD.cpp model/cellule/celluleQuoromD.h model/graphe/grille.cpp model/graphe/grille.h model/struct/struct.h model/struct/struct.cpp model/Voisinage/Voisinage.cpp model/Voisinage/Voisinage.h)
 target_link_libraries(Code ${SDL2_LIBRARIES})

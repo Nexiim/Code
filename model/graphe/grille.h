@@ -23,7 +23,9 @@ public:
 
     void MAJGrille();
 
-    void setVoisinage(Voisinage v);
+    void setVoisinage(VoisinageClassique v);
+    int getWidth();
+    int getHeight();
 
 private:
     int width;

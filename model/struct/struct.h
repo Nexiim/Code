@@ -7,13 +7,13 @@
 
 #include <iostream>
 
-enum class Voisinage : char{
+enum class VoisinageClassique : char{
     MOORE8,
     MOORE9,
     TOOM,
     VONNEUMAN
 };
 
-std::string ToString(Voisinage v) noexcept;
+std::string ToString(VoisinageClassique v) noexcept;
 
 #endif //CODE_STRUCT_H

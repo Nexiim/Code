@@ -4,13 +4,13 @@
 
 #include "struct.h"
 
-std::string ToString(Voisinage v) noexcept{
+std::string ToString(VoisinageClassique v) noexcept{
     switch (v)
     {
-        case Voisinage::VONNEUMAN: return "vonneuman";
-        case Voisinage::MOORE8: return "moore8";
-        case Voisinage::MOORE9: return "moore9";
-        case Voisinage::TOOM: return "toom";
+        case VoisinageClassique::VONNEUMAN: return "vonneuman";
+        case VoisinageClassique::MOORE8: return "moore8";
+        case VoisinageClassique::MOORE9: return "moore9";
+        case VoisinageClassique::TOOM: return "toom";
     }
     return "default";
 }
