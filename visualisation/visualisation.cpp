@@ -15,7 +15,7 @@ void Visualisation::initVisualisation() {
     }
 
     else {
-        SDL_CreateWindowAndRenderer(width, height, 0, &window, &renderer);
+        SDL_CreateWindowAndRenderer(width*pixelSize, height*pixelSize, 0, &window, &renderer);
     }
 }
 
@@ -25,8 +25,11 @@ void Visualisation::affichage(){
             if (G->getCellule(i,j)->getEtat() == NORMAL) SDL_SetRenderDrawColor(renderer, 255, 255, 255, 0);
             else if (G->getCellule(i,j)->getEtat() == ALERTE) SDL_SetRenderDrawColor(renderer, 255, 0, 0, 0);
             else SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
-
-            SDL_RenderDrawPoint(renderer, i, j);
+            for(int a = 0; a < pixelSize; a++){
+                for (int b = 0; b < pixelSize; b++){
+                    SDL_RenderDrawPoint(renderer, i*pixelSize+a, j*pixelSize+b);
+                }
+            }
         }
     }
     SDL_RenderPresent(renderer);
@@ -34,16 +37,18 @@ void Visualisation::affichage(){
 
 void Visualisation::loopEvent() {
     bool sim = false;
+    int s = 0;
     if (window) {
         int close = 0;
         affichage();
         while (!close) {
+            affichage();
             // Events management
-            if( sim){
+            if(sim){
                 if(!G->seuil(0.95)) {
                     G->MAJGrille();
-                    affichage();
                 }
+                else sim = !sim;
             }
             while (SDL_PollEvent(&event)) {
                 //
@@ -60,7 +65,9 @@ void Visualisation::loopEvent() {
                                 break;
                             case SDLK_z:
                                 G->MAJGrille();
-                                affichage();
+                                break;
+                            case SDLK_t:
+                                G->contamination();
                                 break;
                         }
                 }
@@ -73,6 +80,11 @@ Visualisation::Visualisation(int height, int witdh, Grille *G) {
     this->height= height;
     this->width = witdh;
     this->G = G;
+    this->pixelSize = 1;
+}
+
+Grille* Visualisation::getGrille() {
+    return G;
 }
 
 

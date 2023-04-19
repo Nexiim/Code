@@ -4,27 +4,30 @@
 
 #include "graphe.h"
 
+
+
 /*Fonction lié au graphe*/
 
-Graphe::Graphe(int size,typeCellue c) {
+Graphe::Graphe(int size, typeCellule c) {
     this->c = c;
     for (int i = 0; i < size; i++) {
-        if (c == typeCellue::DEFAULT) this->listeCellules.push_back(new Cellule());
-        if (c == typeCellue::QUOROMD) this->listeCellules.push_back(new CelluleQuoromD);
+        if (c == typeCellule::DEFAULT) this->listeCellules.push_back(new Cellule());
+        if (c == typeCellule::QUOROMD) this->listeCellules.push_back(new CelluleQuoromD());
+        if (c == typeCellule::CORRECTEUR) this->listeCellules.push_back(new Correcteur());
     }
     this->threshold = 0;
 }
-Graphe::Graphe(int size,typeCellue c,double lambda) {
+Graphe::Graphe(int size, typeCellule c, double lambda) {
     this->c = c;
     for (int i = 0; i < size; i++) {
-        if (c == typeCellue::QUOROMD) this->listeCellules.push_back(new CelluleQuoromD(lambda));
+        if (c == typeCellule::QUOROMD) this->listeCellules.push_back(new CelluleQuoromD(lambda));
     }
     this->threshold = 0;
 }
-Graphe::Graphe(int size,typeCellue c,double lambda,double* precalcul) {
+Graphe::Graphe(int size, typeCellule c, double lambda, double* precalcul) {
     this->c = c;
     for (int i = 0; i < size; i++) {
-        if (c == typeCellue::QUOROMD) this->listeCellules.push_back(new CelluleQuoromD(lambda,precalcul));
+        if (c == typeCellule::QUOROMD) this->listeCellules.push_back(new CelluleQuoromD(lambda, precalcul));
     }
     this->threshold = 0;
 }
@@ -72,7 +75,7 @@ int Graphe::nbCellule() {
 }
 
 void Graphe::setLamba(double lambda) {
-    if (this->c == typeCellue::QUOROMD){
+    if (this->c == typeCellule::QUOROMD){
         for (int i = 0; i < this->listeCellules.size(); i++){
             CelluleQuoromD* cell = static_cast<CelluleQuoromD*>(getCellule(i));
             cell->setLambda(lambda);
@@ -81,12 +84,20 @@ void Graphe::setLamba(double lambda) {
 }
 
 void Graphe::setPreCalcul(double *preCalcul) {
-    if (this->c == typeCellue::QUOROMD){
+    if (this->c == typeCellule::QUOROMD){
         for (int i = 0; i < this->listeCellules.size(); i++){
             CelluleQuoromD* cell = static_cast<CelluleQuoromD*>(getCellule(i));
             cell->setPreCalcul(preCalcul);
         }
     }
+}
+
+void Graphe::contamination() {
+    for (int i = 0; i < this->listeCellules.size();i++)
+            this->getCellule(i)->contamination();
+
+    for (int i = 0; i < this->listeCellules.size();i++)
+        this->getCellule(i)->nextT();
 }
 
 

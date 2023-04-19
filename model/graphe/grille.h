@@ -11,9 +11,9 @@
 
 class Grille : public Graphe {
 public:
-    Grille(int width, int height,typeCellue c);
-    Grille(int width, int height,typeCellue c,double lambda);
-    Grille(int width, int height,typeCellue c,double lambda,double* preCalcul);
+    Grille(int width, int height, typeCellule c);
+    Grille(int width, int height, typeCellule c, double lambda);
+    Grille(int width, int height, typeCellule c, double lambda, double* preCalcul);
 
     void reset(double proba,double lambda,double* precalcul);
 
@@ -26,10 +26,13 @@ public:
     void setVoisinage(VoisinageClassique v);
     int getWidth();
     int getHeight();
+    VoisinageClassique getVoisinage();
 
 private:
-    int width;
-    int height;
+    int width{};
+    int height{};
+    VoisinageClassique v;
+    Bord b;
 
     void Moore8();
     void Moore9();

@@ -6,17 +6,14 @@
 #define CODE_GRAPHE_H
 
 #include "../cellule/celluleQuoromD.h"
+#include "../cellule/codeCorrecteur/correcteur.h"
 
-enum class typeCellue{
-    QUOROMD,
-    DEFAULT
-};
 
 class Graphe {
 public:
-    Graphe(int size,typeCellue);
-    Graphe(int size,typeCellue,double lambda);
-    Graphe(int size,typeCellue c,double lambda,double* precalcul);
+    Graphe(int size, typeCellule);
+    Graphe(int size, typeCellule, double lambda);
+    Graphe(int size, typeCellule c, double lambda, double* precalcul);
 
     void reset();
 
@@ -30,6 +27,8 @@ public:
     int nbDef();
     int nbCellule();
 
+    void contamination();
+
     void setLamba(double lambda);
     void setPreCalcul(double* precalcul);
 
@@ -37,7 +36,7 @@ private:
     vector<Cellule*> listeCellules;
 
 protected:
-    typeCellue c;
+    typeCellule c;
     double threshold;
 
 };

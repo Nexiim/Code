@@ -16,7 +16,7 @@ public:
     void transition();
 
     void setLambda(double lambda);
-    int getLambda();
+    double getLambda();
     void setPreCalcul(double* preCalcul);
 
 private:

@@ -14,6 +14,36 @@ enum class VoisinageClassique : char{
     VONNEUMAN
 };
 
+enum class typeCellule{
+    QUOROMD,
+    CORRECTEUR,
+    DEFAULT
+};
+
+enum class Bord :char{
+    BORD,
+    TORIQUE
+};
+
+enum class Topologie : char{
+    GRILLE,
+    GRAPHE
+};
+
+enum class Focus{
+    DEFAULT,
+    LAMBDA,
+    TMPMAX,
+    PROBADEF
+};
+
+enum class Evolution{
+    DENSITY,
+    PROBABILITE
+};
+
+typedef enum{DEFAILANTE,ALERTE,NORMAL} Etat;
+
 std::string ToString(VoisinageClassique v) noexcept;
 
 #endif //CODE_STRUCT_H

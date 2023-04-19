@@ -5,18 +5,25 @@
 #include "grille.h"
 
 /*Fonction lié à la grille*/
-Grille::Grille(int witdh, int height,typeCellue c) : Graphe(witdh * height,c) {
+Grille::Grille(int witdh, int height, typeCellule c) : Graphe(witdh * height, c) {
     this->height = height;
     this->width = witdh;
     this->c =c;
+    this->b = Bord::TORIQUE;
 }
 
-Grille::Grille(int witdh, int height,typeCellue c,double lambda) : Graphe(witdh * height,c,lambda) {
-    Grille(witdh,height,c);
+Grille::Grille(int witdh, int height, typeCellule c, double lambda) : Graphe(witdh * height, c, lambda) {
+    this->height = height;
+    this->width = witdh;
+    this->c =c;
+    this->b = Bord::TORIQUE;
 }
 
-Grille::Grille(int witdh, int height,typeCellue c,double lambda,double* precalcul) : Graphe(witdh * height,c,lambda, precalcul) {
-    Grille(witdh,height,c);
+Grille::Grille(int witdh, int height, typeCellule c, double lambda, double* precalcul) : Graphe(witdh * height, c, lambda, precalcul) {
+    this->height = height;
+    this->width = witdh;
+    this->c =c;
+    this->b = Bord::TORIQUE;
 }
 
 Cellule* Grille::getCellule(int i, int j) {
@@ -24,7 +31,6 @@ Cellule* Grille::getCellule(int i, int j) {
 }
 
 void Grille::MAJGrille() {
-
     for (int i = 0; i < this->width; i++) {
         for (int j = 0; j < this->height; j++) {
             this->getCellule(i, j)->transition();
@@ -97,9 +103,15 @@ void Grille::VonNeumann() {
             for (int a = -1; a < 2; a++) {
                 for (int b = -1; b < 2; b++) {
                     if (a != b & a != -b) {
-                        if (((i + a) >= 0) & ((i + a) <= (this->width - 1)) & ((j + b) >= 0) &
-                            ((j + b) <= (this->height - 1))) {
-                            this->getCellule(i, j)->addVoisin(this->getCellule(i + a, j + b));
+                        if(this->b == Bord::TORIQUE){
+                            this->getCellule(i, j)->addVoisin(this->getCellule((this->width+(i + a))% this->width,
+                                                                               (this->height+(j + b))% this->height));
+                        }
+                        else if(this->b == Bord::BORD) {
+                            if (((i + a) >= 0) & ((i + a) <= (this->width - 1)) & ((j + b) >= 0) &
+                                ((j + b) <= (this->height - 1))) {
+                                this->getCellule(i, j)->addVoisin(this->getCellule(i + a, j + b));
+                            }
                         }
                     }
                 }
@@ -111,20 +123,30 @@ void Grille::VonNeumann() {
 void Grille::Toom() {
     for (int i = 0; i < this->width; i++) {
         for (int j = 0; j < this->height; j++) {
-            this->getCellule(i,j)->setNbVoisinMax(VoisinageClassique::TOOM);
-            this->getCellule(i, j)->addVoisin(this->getCellule(i, j));
-            if (i + 1 < this->width) this->getCellule(i, j)->addVoisin(this->getCellule(i + 1, j));
-            if (j - 1 >= 0) this->getCellule(i, j)->addVoisin(this->getCellule(i, j - 1));
+            if(this->b == Bord::TORIQUE) {
+                this->getCellule(i, j)->addVoisin(this->getCellule((i + 1)%this->width, j));
+                this->getCellule(i, j)->addVoisin(this->getCellule(i, (j+1)% this->height));
+            }
+            else if(this->b == Bord::BORD) {
+                this->getCellule(i, j)->setNbVoisinMax(VoisinageClassique::TOOM);
+                this->getCellule(i, j)->addVoisin(this->getCellule(i, j));
+                if (i + 1 < this->width) this->getCellule(i, j)->addVoisin(this->getCellule(i + 1, j));
+                if (j - 1 >= 0) this->getCellule(i, j)->addVoisin(this->getCellule(i, j - 1));
+            }
         }
     }
 }
 
 void Grille::setVoisinage(VoisinageClassique v) {
+    this->v = v;
     if (v == VoisinageClassique::MOORE8) this->Moore8();
     else if (v == VoisinageClassique::MOORE9) this->Moore9();
     else if (v == VoisinageClassique::TOOM) this->Toom();
     else if (v == VoisinageClassique::VONNEUMAN) this->VonNeumann();
-    else cout << " erreur setup voisinage";
+    else {
+        this->v = static_cast<VoisinageClassique>(NULL);
+        cout << " erreur setup voisinage";
+    }
 }
 
 void Grille::reset(double proba, double lambda, double *precalcul) {
@@ -149,4 +171,8 @@ int Grille::getWidth() {
 
 int Grille::getHeight() {
     return this->height;
+}
+
+VoisinageClassique Grille::getVoisinage() {
+    return this->v;
 }

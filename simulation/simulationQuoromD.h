@@ -6,19 +6,22 @@
 #define CODE_SIMULATIONQUOROMD_H
 #include "simulation.h"
 #include <omp.h>
+#include "../model/util/file.h"
 
 
 class SimulationQuoromD : public Simulation{
 public:
     SimulationQuoromD(int* T, int nbTest , double* probaDef, VoisinageClassique v, double threshold, int height, int width, double* lambda);
 
+    SimulationQuoromD(int nbTest, double threshold, int *T, double *lambda, double *probaDef, Grille *G);
+
     void start();
     void start(Focus f);
 
     void startDensitySim();
-    void startDensitySim(Focus f);
 
     void calculeExp(double lambda, VoisinageClassique v);
+    Grille* getGrille();
 
 private:
     Grille *G;
@@ -29,8 +32,6 @@ private:
     void simulationT();
     void simulationLambda();
 
-    void simulationDensityT();
-    void simulationDensityLambda();
-    void simulationDensityProbadef();
+
 };
 #endif //CODE_SIMULATIONQUOROMD_H

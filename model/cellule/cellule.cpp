@@ -48,11 +48,16 @@ void Cellule::nextT() {
 
 void Cellule::transition() {}
 
+void Cellule::contamination() {
+    if (countVoisin(ALERTE) > 0 || countVoisin(DEFAILANTE) > 0)
+        this->etatSuivant = ALERTE;
+}
+
 void Cellule::setNbVoisinMax(VoisinageClassique v) {
     if (v == VoisinageClassique::MOORE8) this->nbVoisinMax = 8;
     else if (v == VoisinageClassique::MOORE9) this->nbVoisinMax = 9;
     else if (v == VoisinageClassique::TOOM) this->nbVoisinMax = 3;
-    else if (v == VoisinageClassique::VONNEUMAN) this->nbVoisinMax = 4;
+    else if (v == VoisinageClassique::VONNEUMAN) this->nbVoisinMax = 5;
 }
 
 

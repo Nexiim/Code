@@ -13,7 +13,7 @@
 
 using namespace std;
 
-typedef enum{DEFAILANTE,ALERTE,NORMAL} Etat;
+
 
 class Cellule{
     public:
@@ -31,6 +31,7 @@ class Cellule{
         void setNbVoisinMax(VoisinageClassique v);
 
         virtual void transition();
+        void contamination();
         void nextT();
 
     protected:

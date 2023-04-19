@@ -13,6 +13,7 @@ public:
     Voisinage(Grille* G);
 
     void setVoisinageNorme(double r);
+    void setVoisinageNorme(int x, int y, double r);
 
 private:
     Grille* G;

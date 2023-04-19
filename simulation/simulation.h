@@ -9,12 +9,6 @@
 #include "../model/graphe/graphe.h"
 #include "../model/graphe/grille.h"
 
-typedef enum{
-    LAMBDA,
-    TMPMAX,
-    PROBADEF
-}Focus;
-
 
 
 class Simulation {

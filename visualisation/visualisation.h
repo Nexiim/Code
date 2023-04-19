@@ -16,15 +16,20 @@ public:
     void initVisualisation();
 
     void loopEvent();
+    Grille* getGrille();
+
 private:
-    int height;
-    int width;
-    Grille* G;
-    SDL_Event event;
-    SDL_Renderer *renderer;
-    SDL_Window *window;
 
     void affichage();
+
+protected:
+    int height;
+    int width;
+    int pixelSize;
+    SDL_Renderer *renderer;
+    Grille* G;
+    SDL_Event event;
+    SDL_Window *window;
 };
 
 #endif //CODE_VISUALISATION_H
