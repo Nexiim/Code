@@ -20,7 +20,7 @@ enum class typeCellule{
     DEFAULT
 };
 
-enum class Bord :char{
+enum class Bordure :char{
     BORD,
     TORIQUE
 };
@@ -28,13 +28,6 @@ enum class Bord :char{
 enum class Topologie : char{
     GRILLE,
     GRAPHE
-};
-
-enum class Focus{
-    DEFAULT,
-    LAMBDA,
-    TMPMAX,
-    PROBADEF
 };
 
 enum class Evolution{

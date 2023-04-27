@@ -12,7 +12,7 @@ SimulationQuoromD::SimulationQuoromD(int *T, int nbTest, double *probaDef, Voisi
     this->lambda = lambda;
     this->nbTest = nbTest;
     this->G = new Grille(width, height, typeCellule::QUOROMD);
-    this->G->setVoisinage(v);
+    static_cast<Grille*>(this->G)->setVoisinage(v);
     this->listExp = nullptr;
 }
 
@@ -21,6 +21,13 @@ SimulationQuoromD::SimulationQuoromD(int nbTest,double threshold, int *T,double 
     this->nbTest = nbTest;
     this->G = G;
     this->v = G->getVoisinage();
+    this->listExp = nullptr;
+}
+
+SimulationQuoromD::SimulationQuoromD(int nbTest,double threshold, int *T,double *lambda, double *probaDef,Graphe *G) :Simulation(T, nbTest, probaDef, threshold) {
+    this->lambda = lambda;
+    this->nbTest = nbTest;
+    this->G = G;
     this->listExp = nullptr;
 }
 
@@ -55,7 +62,7 @@ void SimulationQuoromD::start() {
                     G->reset(probaDef[iProba], lambda[iLambda], listExp);
                     std::this_thread::sleep_for(std::chrono::seconds(1));
                     while (nbIter < T[iT]) {
-                        G->MAJGrille();
+                        G->MAJ();
                         if (G->seuil(threshold)) {
                             succes++;
                             break;
@@ -102,7 +109,7 @@ void SimulationQuoromD::startDensitySim() {
                 file::GetInstance()->write(data);
                 nbIter = 0;
                 while (nbIter < T[iT]) {
-                    G->MAJGrille();
+                    G->MAJ();
                     string s = to_string(nbIter) + "," +
                                to_string((double) G->nbAlerte() / ((double) (G->nbCellule() - G->nbDef())));
                     file::GetInstance()->write(s);
@@ -141,6 +148,6 @@ void SimulationQuoromD::calculeExp(double lambda, VoisinageClassique v) {
     }
 }
 
-Grille *SimulationQuoromD::getGrille() {
+Graphe *SimulationQuoromD::getGraphe() {
     return G;
 }

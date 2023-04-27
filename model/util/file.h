@@ -23,14 +23,14 @@ private:
     char* filename;
 
     Topologie topologie;
+    Bordure bordure;
     int* size;
     typeCellule cellule;
     VoisinageClassique voisinnage;
-    double* lambda;
+    double* parametre;
     int* nbIterationMax;
     double seuil;
     double* probaDef;
-    Focus focus;
     Evolution evolution;
 public:
     Evolution getEvolution() const;
@@ -63,19 +63,19 @@ public:
 
     Topologie getTopologie() const;
 
+    Bordure getBordure() const;
+
     typeCellule getCellue() const;
 
     VoisinageClassique getVoisinnage() const;
 
-    double *getLambda() const;
+    double *getParametre() const;
 
     int* getNbIterationMax() const;
 
     double getSeuil() const;
 
     double *getProbaDef() const;
-
-    Focus getFocus() const;
 
     bool isVisualisation() const;
 

@@ -7,27 +7,22 @@
 
 #include <SDL2/SDL.h>
 #include "../model/graphe/graphe.h"
+#include "visualisation.h"
 
-class VisualisationGraphe {
+class visualisationGraphe : public visualisation{
 public:
-    VisualisationGraphe(Graphe* G);
-
-    void initVisualisation();
+    visualisationGraphe(Graphe* G);
 
     void loopEvent();
 
 private:
 
     void affichage();
+    void drawVoisinage();
 
 protected:
-    int height;
-    int width;
-    int pixelSize;
-    SDL_Renderer *renderer;
     Graphe* G;
-    SDL_Event event;
-    SDL_Window *window;
+    vector<pair<pair<int,int>,pair<int,int>>> listeLigne;
 };
 
 

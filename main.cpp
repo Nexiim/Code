@@ -1,7 +1,8 @@
 #include <iostream>
 #include "simulation/simulation.h"
 #include "simulation/simulationQuoromD.h"
-#include "visualisation/visualisation.h"
+#include "visualisation/visualisationGrille.h"
+#include "visualisation/visualisationGraphe.h"
 #include "model/Voisinage/Voisinage.h"
 #include "model/cellule/codeCorrecteur/correcteur.h"
 #include "visualisation/codeCorrecteur/VisuCodeCorrecteur.h"
@@ -17,7 +18,7 @@ using namespace std;
 
 int main() {
 
-    Grille G(H,W,typeCellule::CORRECTEUR);
+    /*Grille G(H,W,typeCellule::CORRECTEUR);
     G.setVoisinage(VoisinageClassique::TOOM);
 
     VisuCodeCorrecteur v(H,W,&G);
@@ -34,6 +35,16 @@ int main() {
         }
         c2 = (c2+1)%3;
     }
+
+    v.loopEvent();*/
+
+    Graphe G(1000,typeCellule::QUOROMD);
+    G.setLambda(9);
+    G.setCelluleDef(0.05);
+    G.setVoisinsProche(4);
+
+    visualisationGraphe v(&G);
+    v.initVisualisation();
 
     v.loopEvent();
 

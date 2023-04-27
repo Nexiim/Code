@@ -2,24 +2,13 @@
 // Created by kevin on 15/03/23.
 //
 
-#include "visualisation.h"
+#include "visualisationGrille.h"
 
-
-
-void Visualisation::initVisualisation() {
-    /* Initialisation simple */
-    if (SDL_Init(SDL_INIT_VIDEO) != 0 )
-    {
-        fprintf(stdout,"Échec de l'initialisation de la SDL (%s)\n",SDL_GetError());
-        return;
-    }
-
-    else {
-        SDL_CreateWindowAndRenderer(width*pixelSize, height*pixelSize, 0, &window, &renderer);
-    }
+visualisationGrille::visualisationGrille(int width,int height, Grille *G):visualisation(width,height){
+    this->G = G;
 }
 
-void Visualisation::affichage(){
+void visualisationGrille::affichage(){
     for (int j = 0; j < height; j++) {
         for (int i = 0; i <width; ++i) {
             if (G->getCellule(i,j)->getEtat() == NORMAL) SDL_SetRenderDrawColor(renderer, 255, 255, 255, 0);
@@ -35,7 +24,7 @@ void Visualisation::affichage(){
     SDL_RenderPresent(renderer);
 }
 
-void Visualisation::loopEvent() {
+void visualisationGrille::loopEvent() {
     bool sim = false;
     int s = 0;
     if (window) {
@@ -46,7 +35,7 @@ void Visualisation::loopEvent() {
             // Events management
             if(sim){
                 if(!G->seuil(0.95)) {
-                    G->MAJGrille();
+                    G->MAJ();
                 }
                 else sim = !sim;
             }
@@ -64,7 +53,7 @@ void Visualisation::loopEvent() {
                                 sim = !sim;
                                 break;
                             case SDLK_z:
-                                G->MAJGrille();
+                                G->MAJ();
                                 break;
                             case SDLK_t:
                                 G->contamination();
@@ -76,16 +65,10 @@ void Visualisation::loopEvent() {
     }
 }
 
-Visualisation::Visualisation(int height, int witdh, Grille *G) {
-    this->height= height;
-    this->width = witdh;
-    this->G = G;
-    this->pixelSize = 1;
-}
-
-Grille* Visualisation::getGrille() {
+Grille* visualisationGrille::getGrille() {
     return G;
 }
+
 
 
 

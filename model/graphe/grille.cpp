@@ -9,28 +9,28 @@ Grille::Grille(int witdh, int height, typeCellule c) : Graphe(witdh * height, c)
     this->height = height;
     this->width = witdh;
     this->c =c;
-    this->b = Bord::TORIQUE;
+    this->b = Bordure::BORD;
 }
 
 Grille::Grille(int witdh, int height, typeCellule c, double lambda) : Graphe(witdh * height, c, lambda) {
     this->height = height;
     this->width = witdh;
     this->c =c;
-    this->b = Bord::TORIQUE;
+    this->b = Bordure::BORD;
 }
 
 Grille::Grille(int witdh, int height, typeCellule c, double lambda, double* precalcul) : Graphe(witdh * height, c, lambda, precalcul) {
     this->height = height;
     this->width = witdh;
     this->c =c;
-    this->b = Bord::TORIQUE;
+    this->b = Bordure::BORD;
 }
 
 Cellule* Grille::getCellule(int i, int j) {
     return Graphe::getCellule((j * this->width) + i);
 }
 
-void Grille::MAJGrille() {
+void Grille::MAJ() {
     for (int i = 0; i < this->width; i++) {
         for (int j = 0; j < this->height; j++) {
             this->getCellule(i, j)->transition();
@@ -68,9 +68,15 @@ void Grille::Moore8() {
             for (int a = -1; a < 2; a++) {
                 for (int b = -1; b < 2; b++) {
                     if (a != 0 || b != 0) {
-                        if (((i + a) >= 0) & ((i + a) <= (this->width - 1)) & ((j + b) >= 0) &
-                            ((j + b) <= (this->height - 1))) {
-                            this->getCellule(i, j)->addVoisin(this->getCellule(i + a, j + b));
+                        if(this->b == Bordure::TORIQUE) {
+                            this->getCellule(i, j)->addVoisin(this->getCellule((this->width+(i + a))% this->width,
+                                                                               (this->height+(j + b))% this->height));
+                        }
+                        else if(this->b == Bordure::BORD) {
+                            if (((i + a) >= 0) & ((i + a) <= (this->width - 1)) & ((j + b) >= 0) &
+                                ((j + b) <= (this->height - 1))) {
+                                this->getCellule(i, j)->addVoisin(this->getCellule(i + a, j + b));
+                            }
                         }
                     }
                 }
@@ -103,11 +109,11 @@ void Grille::VonNeumann() {
             for (int a = -1; a < 2; a++) {
                 for (int b = -1; b < 2; b++) {
                     if (a != b & a != -b) {
-                        if(this->b == Bord::TORIQUE){
+                        if(this->b == Bordure::TORIQUE){
                             this->getCellule(i, j)->addVoisin(this->getCellule((this->width+(i + a))% this->width,
                                                                                (this->height+(j + b))% this->height));
                         }
-                        else if(this->b == Bord::BORD) {
+                        else if(this->b == Bordure::BORD) {
                             if (((i + a) >= 0) & ((i + a) <= (this->width - 1)) & ((j + b) >= 0) &
                                 ((j + b) <= (this->height - 1))) {
                                 this->getCellule(i, j)->addVoisin(this->getCellule(i + a, j + b));
@@ -123,11 +129,11 @@ void Grille::VonNeumann() {
 void Grille::Toom() {
     for (int i = 0; i < this->width; i++) {
         for (int j = 0; j < this->height; j++) {
-            if(this->b == Bord::TORIQUE) {
+            if(this->b == Bordure::TORIQUE) {
                 this->getCellule(i, j)->addVoisin(this->getCellule((i + 1)%this->width, j));
                 this->getCellule(i, j)->addVoisin(this->getCellule(i, (j+1)% this->height));
             }
-            else if(this->b == Bord::BORD) {
+            else if(this->b == Bordure::BORD) {
                 this->getCellule(i, j)->setNbVoisinMax(VoisinageClassique::TOOM);
                 this->getCellule(i, j)->addVoisin(this->getCellule(i, j));
                 if (i + 1 < this->width) this->getCellule(i, j)->addVoisin(this->getCellule(i + 1, j));
@@ -149,21 +155,7 @@ void Grille::setVoisinage(VoisinageClassique v) {
     }
 }
 
-void Grille::reset(double proba, double lambda, double *precalcul) {
-    for (int i = 0; i < this->width; i++) {
-        for (int j = 0; j < this->height; j++) {
-            auto* cell = dynamic_cast<CelluleQuoromD*>(getCellule(i,j));
-            cell->setLambda(lambda);
-            cell->setPreCalcul(precalcul);
-            double r = rand() / double(RAND_MAX);
-            if (r < proba) {
-                this->getCellule(i,j)->setEtat(DEFAILANTE);
-            } else
-                this->getCellule(i,j)->setEtat(NORMAL);
-        }
-    }
-    this->threshold = 0;
-}
+
 
 int Grille::getWidth() {
     return this->width;
@@ -175,4 +167,8 @@ int Grille::getHeight() {
 
 VoisinageClassique Grille::getVoisinage() {
     return this->v;
+}
+
+void Grille::setBordure(Bordure b) {
+    this->b = b;
 }

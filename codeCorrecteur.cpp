@@ -15,7 +15,7 @@ void setupGrille(Grille *G){
     for (int i = 0; i < G->getWidth(); i++) {
         c1 = c2;
         for (int j = 0; j < G->getHeight(); j++) {
-            Correcteur *c = dynamic_cast<Correcteur *>(G.getCellule(i, j));
+            Correcteur *c = dynamic_cast<Correcteur *>(G->getCellule(i, j));
             c1 = (c1 + 1) % 3;
             c->setValue(c1);
         }
@@ -26,6 +26,7 @@ void setupGrille(Grille *G){
 int main() {
 
     Grille G(H, W, typeCellule::CORRECTEUR);
+    G.setBordure(Bordure::TORIQUE);
     G.setVoisinage(VoisinageClassique::TOOM);
 
     setupGrille(&G);

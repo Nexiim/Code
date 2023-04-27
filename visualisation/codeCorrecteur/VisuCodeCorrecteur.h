@@ -6,11 +6,11 @@
 #define CODE_VISUCODECORRECTEUR_H
 
 
-#include "../visualisation.h"
+#include "../visualisationGrille.h"
 #include "../../model/cellule/codeCorrecteur/correcteur.h"
 
 
-class VisuCodeCorrecteur : public Visualisation{
+class VisuCodeCorrecteur : public visualisation{
 
 public:
 

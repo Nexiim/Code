@@ -2,20 +2,20 @@
 // Created by kevin on 15/03/23.
 //
 
-#ifndef CODE_VISUALISATION_H
-#define CODE_VISUALISATION_H
+#ifndef CODE_VISUALISATIONGRILLE_H
+#define CODE_VISUALISATIONGRILLE_H
 
 #include <SDL2/SDL.h>
 #include "../model/graphe/graphe.h"
 #include "../model/graphe/grille.h"
+#include "visualisation.h"
 
-class Visualisation{
+class visualisationGrille : public visualisation{
 public:
-    Visualisation(int height,int witdh,Grille* G);
-
-    void initVisualisation();
+    visualisationGrille(int width,int height,Grille* G);
 
     void loopEvent();
+
     Grille* getGrille();
 
 private:
@@ -23,13 +23,8 @@ private:
     void affichage();
 
 protected:
-    int height;
-    int width;
-    int pixelSize;
-    SDL_Renderer *renderer;
     Grille* G;
-    SDL_Event event;
-    SDL_Window *window;
+
 };
 
-#endif //CODE_VISUALISATION_H
+#endif //CODE_VISUALISATIONGRILLE_H

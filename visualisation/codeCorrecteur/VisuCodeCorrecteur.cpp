@@ -29,7 +29,6 @@ VisuCodeCorrecteur::VisuCodeCorrecteur(int height, int witdh, Grille *G) : Visua
 
 void VisuCodeCorrecteur::loopEvent() {
     bool sim = false;
-    int s = 0;
     int x,y;
     Correcteur *c;
     if (window) {
@@ -39,10 +38,12 @@ void VisuCodeCorrecteur::loopEvent() {
             affichage();
             // Events management
             if(sim){
-                x = rand()%G->getWidth();
-                y = rand()%G->getHeight();
-                c = dynamic_cast<Correcteur *>(G->getCellule(x, y));
-                c->transition();
+                for (int i =0; i < G->getWidth();i++){
+                    for (int j =0; j < G->getHeight();j++){
+                        c = dynamic_cast<Correcteur *>(G->getCellule(i, j));
+                        c->transition();
+                    }
+                }
             }
             while (SDL_PollEvent(&event)) {
                 //

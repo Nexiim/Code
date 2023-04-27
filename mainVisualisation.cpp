@@ -3,7 +3,7 @@
 //
 #include <thread>
 #include "model/graphe/grille.h"
-#include "visualisation/visualisation.h"
+#include "visualisation/visualisationGrille.h"
 #include "simulation/simulationQuoromD.h"
 #include "model/util/file.h"
 
@@ -12,9 +12,9 @@
 #define FAILURERATE 0.04
 #define THRESHOLD 0.95
 
-void startSimulation(Grille *G){
+void startSimulation(Graphe *G){
     file *f = file::GetInstance();
-    SimulationQuoromD s(f->getNbTest(), f->getSeuil(),f->getNbIterationMax(), f->getLambda(), f->getProbaDef(), G);
+    SimulationQuoromD s(f->getNbTest(), f->getSeuil(),f->getNbIterationMax(), f->getParametre(), f->getProbaDef(), G);
 
     std::this_thread::sleep_for(std::chrono::seconds(1));
 
@@ -23,7 +23,7 @@ void startSimulation(Grille *G){
 }
 
 void startVisualisation(Grille *G){
-    Visualisation v(G->getHeight(),G->getWidth(),G);
+    visualisationGrille v(G->getHeight(),G->getWidth(),G);
     v.initVisualisation();
     v.loopEvent();
 }
@@ -39,7 +39,12 @@ int main(int argc, char *argv[]) {
 
         if (f->getTopologie() == Topologie::GRILLE) {
             Grille G(f->getSize()[0], f->getSize()[1], f->getCellue());
+            G.setBordure(f->getBordure());
             G.setVoisinage(f->getVoisinnage());
+
+            for (int i = 0; i < G.getCellule(20,20)->nbVoisin();i++){
+                cout << G.getCellule(20,20)->getVoisin(i) << " ";
+            }
 
             std::thread simulationThread(startSimulation, &G);
             if ( f->isVisualisation()) {

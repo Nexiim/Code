@@ -38,6 +38,13 @@ void file::loadFile(char* nameFile) {
                 else cout << "erreur de topologie" << endl;
             }
 
+            else if (categorie == "bordure"){
+                if (ligne == "bord") bordure = Bordure::BORD;
+                else if (ligne == "torique") bordure = Bordure::TORIQUE;
+                else cout << "erreur de bordure" << endl;
+            }
+
+
             else if (categorie == "taille"){
                 if (topologie == Topologie::GRAPHE){
                     if (ligne.find(',') != -1) cout << "erreur sur la taille de la grille" << endl;
@@ -122,17 +129,6 @@ void file::loadFile(char* nameFile) {
                 }
             }
 
-            else if(categorie == "focus"){
-                if(ligne.empty()) focus = Focus::DEFAULT;
-                else if (ligne == "temps") focus = Focus::TMPMAX;
-                else if (ligne == "probaDef") focus = Focus::PROBADEF;
-                else if (ligne == "lambda"){
-                    if (cellule == typeCellule::QUOROMD) focus = Focus::LAMBDA;
-                    else cout << "focus un lambda impossible sans cellule QuoromD";
-                }
-                else cout << "erreur sur le focus" << endl;
-            }
-
             else if(categorie == "probaDef"){
                 int nbARG = 1;
                 vector<double> v;
@@ -155,7 +151,7 @@ void file::loadFile(char* nameFile) {
                 }
             }
 
-            else if( categorie == "lambda"){
+            else if( categorie == "parametre"){
                 if (cellule == typeCellule::QUOROMD){
                         int nbARG = 1;
                         vector<double> v;
@@ -170,11 +166,11 @@ void file::loadFile(char* nameFile) {
                         if(ligne.empty()) cout << "erreur sur lambda" << endl;
                         else{
                             v.push_back(stod(p));
-                            lambda = (double*)(malloc(sizeof(double)*nbARG+1));
+                            parametre = (double*)(malloc(sizeof(double)*nbARG+1));
                             for (int i =0; i < v.size();i++){
-                                lambda[i] = v.at(i);
+                                parametre[i] = v.at(i);
                             }
-                            lambda[nbARG] = NULL;
+                            parametre[nbARG] = NULL;
                         }
                 }
             }
@@ -213,8 +209,8 @@ VoisinageClassique file::getVoisinnage() const {
     return voisinnage;
 }
 
-double *file::getLambda() const {
-    return lambda;
+double *file::getParametre() const {
+    return parametre;
 }
 
 int* file::getNbIterationMax() const {
@@ -227,10 +223,6 @@ double file::getSeuil() const {
 
 double *file::getProbaDef() const {
     return probaDef;
-}
-
-Focus file::getFocus() const {
-    return focus;
 }
 
 bool file::isVisualisation() const {
@@ -253,4 +245,8 @@ void file::write(string s) {
     fstream f(filename);  //Ouverture d'un fichier en lecture
     f.seekp(0, ios::end);
     f << s << endl;
+}
+
+Bordure file::getBordure() const {
+    return bordure;
 }

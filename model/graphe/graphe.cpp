@@ -10,10 +10,14 @@
 
 Graphe::Graphe(int size, typeCellule c) {
     this->c = c;
+    this->width = size/8;
+    this->height = size/8;
     for (int i = 0; i < size; i++) {
         if (c == typeCellule::DEFAULT) this->listeCellules.push_back(new Cellule());
         if (c == typeCellule::QUOROMD) this->listeCellules.push_back(new CelluleQuoromD());
         if (c == typeCellule::CORRECTEUR) this->listeCellules.push_back(new Correcteur());
+
+        this->posCellule.emplace_back(rand()%this->width,rand()%this->height);
     }
     this->threshold = 0;
 }
@@ -44,10 +48,18 @@ void Graphe::setCelluleDef(double proba) {
     }
 }
 
-void Graphe::reset() {
+void Graphe::reset(double proba, double lambda, double *precalcul) {
     for (int i = 0; i < this->listeCellules.size(); i++) {
-        this->getCellule(i)->resetVoisin();
+            auto* cell = dynamic_cast<CelluleQuoromD*>(getCellule(i));
+            cell->setLambda(lambda);
+            cell->setPreCalcul(precalcul);
+            double r = rand() / double(RAND_MAX);
+            if (r < proba) {
+              this->getCellule(i)->setEtat(DEFAILANTE);
+            } else
+              this->getCellule(i)->setEtat(NORMAL);
     }
+    this->threshold = 0;
 }
 
 bool Graphe::seuil(double s) {
@@ -74,10 +86,10 @@ int Graphe::nbCellule() {
     return listeCellules.size();
 }
 
-void Graphe::setLamba(double lambda) {
+void Graphe::setLambda(double lambda) {
     if (this->c == typeCellule::QUOROMD){
         for (int i = 0; i < this->listeCellules.size(); i++){
-            CelluleQuoromD* cell = static_cast<CelluleQuoromD*>(getCellule(i));
+            auto* cell = dynamic_cast<CelluleQuoromD*>(getCellule(i));
             cell->setLambda(lambda);
         }
     }
@@ -86,7 +98,7 @@ void Graphe::setLamba(double lambda) {
 void Graphe::setPreCalcul(double *preCalcul) {
     if (this->c == typeCellule::QUOROMD){
         for (int i = 0; i < this->listeCellules.size(); i++){
-            CelluleQuoromD* cell = static_cast<CelluleQuoromD*>(getCellule(i));
+            auto* cell = dynamic_cast<CelluleQuoromD*>(getCellule(i));
             cell->setPreCalcul(preCalcul);
         }
     }
@@ -100,8 +112,72 @@ void Graphe::contamination() {
         this->getCellule(i)->nextT();
 }
 
+int Graphe::getHeight() const {
+    return this->height;
+}
 
 
+int Graphe::getWidth() const {
+    return this->width;
+}
+
+pair<int, int> Graphe::getPosCellule(int i) {
+    return this->posCellule.at(i);
+}
 
 
+void Graphe::setVoisinsProche(int nbVoisins){
+    int* plusProche = (int*)malloc(sizeof(int)*nbVoisins);
+    auto* dist = (double*)(malloc(sizeof(double) * nbVoisins));
 
+    for (int i = 0; i < this->listeCellules.size();i++){
+
+        for (int j = 0; j < nbVoisins; j++){
+            dist[j] = numeric_limits<int>::max();
+        }
+
+       for (int j = 0; j < this->listeCellules.size();j++){
+            if (i != j){
+                  double distIJ = sqrt(pow((this->posCellule.at(i).first - this->posCellule.at(j).first),2) +
+                                   pow((this->posCellule.at(i).second - this->posCellule.at(j).second),2));
+                  for (int k =0; k < nbVoisins; k++){
+                      if( dist[k] > distIJ){
+                        plusProche[k] = j;
+                        dist[k] = distIJ;
+                        break;
+                      }
+                  }
+            }
+       }
+
+       for (int j = 0; j < nbVoisins; j++){
+            this->listeCellules.at(i)->addVoisin(this->listeCellules.at(plusProche[j]));
+       }
+    }
+
+    free(plusProche);
+    free(dist);
+}
+
+pair<int, int> Graphe::getPosCellule(Cellule *c) {
+    for (int i = 0; i < this->listeCellules.size(); i++){
+       if (this->listeCellules.at(i) == c){
+            return this->posCellule.at(i);
+       }
+    }
+}
+void Graphe::MAJ() {
+    for (int i = 0; i < this->listeCellules.size(); i++) {
+            this->getCellule(i)->transition();
+    }
+
+    double nbDef = 0;
+    double nbAlerte = 0;
+
+    for (int i = 0; i < this->listeCellules.size(); i++) {
+            this->getCellule(i)->nextT();
+            if (this->getCellule(i)->getEtat() == ALERTE) nbAlerte++;
+            else if (this->getCellule(i)->getEtat() == DEFAILANTE) nbDef++;
+    }
+    this->threshold = nbAlerte / ((double)(width*height - nbDef));
+}
