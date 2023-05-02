@@ -28,7 +28,7 @@ class Cellule{
         Etat getEtat();
         void setEtat(Etat e);
 
-        void setNbVoisinMax(VoisinageClassique v);
+        void setNbVoisinMax(typeVoisinage v);
 
         virtual void transition();
         void contamination();

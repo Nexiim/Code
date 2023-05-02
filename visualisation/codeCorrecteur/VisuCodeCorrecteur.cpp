@@ -23,8 +23,8 @@ void VisuCodeCorrecteur::affichage() {
     SDL_RenderPresent(renderer);
 }
 
-VisuCodeCorrecteur::VisuCodeCorrecteur(int height, int witdh, Grille *G) : Visualisation(height, witdh, G) {
-    this->pixelSize =5;
+VisuCodeCorrecteur::VisuCodeCorrecteur(int height, int witdh, Grille *G) : visualisation(height, witdh,5) {
+    this->G = G;
 }
 
 void VisuCodeCorrecteur::loopEvent() {

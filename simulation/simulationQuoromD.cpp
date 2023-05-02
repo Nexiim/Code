@@ -6,7 +6,7 @@
 #include "simulationQuoromD.h"
 
 
-SimulationQuoromD::SimulationQuoromD(int *T, int nbTest, double *probaDef, VoisinageClassique v, double threshold, int height,
+SimulationQuoromD::SimulationQuoromD(int *T, int nbTest, double *probaDef, typeVoisinage v, double threshold, int height,
                                      int width, double *lambda) : Simulation(T, nbTest, probaDef, threshold) {
     this->v = v;
     this->lambda = lambda;
@@ -17,6 +17,7 @@ SimulationQuoromD::SimulationQuoromD(int *T, int nbTest, double *probaDef, Voisi
 }
 
 SimulationQuoromD::SimulationQuoromD(int nbTest,double threshold, int *T,double *lambda, double *probaDef,Grille *G) :Simulation(T, nbTest, probaDef, threshold) {
+    cout << "création simulation pour une grille" << endl;
     this->lambda = lambda;
     this->nbTest = nbTest;
     this->G = G;
@@ -37,7 +38,7 @@ void SimulationQuoromD::start() {
 
     int iLambda = 0;
     while(lambda[iLambda] != NULL) {
-
+    
         //précalcule des différentes valeurs de probabilité pour QuoromD
         if (listExp != nullptr) free(listExp);
         calculeExp(lambda[iLambda], v);
@@ -57,7 +58,7 @@ void SimulationQuoromD::start() {
                 succes = 0;
                 for (int k = 0; k < nbTest; k++) {
                     nbIter = 0;
-                    
+
                     //On réinitialise le graphe correctement
                     G->reset(probaDef[iProba], lambda[iLambda], listExp);
                     std::this_thread::sleep_for(std::chrono::seconds(1));
@@ -92,8 +93,8 @@ void SimulationQuoromD::startDensitySim() {
     while(lambda[iLambda] != NULL) {
 
         //précalcule des différentes valeurs de probabilité pour QuoromD
-        /*if (listExp != nullptr) free(listExp);
-        calculeExp(lambda[iLambda], v);*/
+        if (listExp != nullptr) free(listExp);
+        calculeExp(lambda[iLambda], v);
 
         int iProba =0;
         while(probaDef[iProba] != NULL){
@@ -127,12 +128,12 @@ void SimulationQuoromD::startDensitySim() {
     cout << "end simulation"<< endl;
 }
 
-void SimulationQuoromD::calculeExp(double lambda, VoisinageClassique v) {
+void SimulationQuoromD::calculeExp(double lambda, typeVoisinage v) {
     int nbVoisin = 0;
-    if (v == VoisinageClassique::MOORE8) nbVoisin = 8;
-    else if (v == VoisinageClassique::MOORE9) nbVoisin = 9;
-    else if (v == VoisinageClassique::TOOM) nbVoisin = 3;
-    else if (v == VoisinageClassique::VONNEUMAN) nbVoisin = 5;
+    if (v == typeVoisinage::MOORE8) nbVoisin = 8;
+    else if (v == typeVoisinage::MOORE9) nbVoisin = 9;
+    else if (v == typeVoisinage::TOOM) nbVoisin = 3;
+    else if (v == typeVoisinage::VONNEUMAN) nbVoisin = 5;
 
     this->listExp = (double *) malloc(sizeof(double) * (nbVoisin+1 ) * (nbVoisin ));
     // nombre de cellules voisinnes normales

@@ -3,7 +3,6 @@
 #include "simulation/simulationQuoromD.h"
 #include "visualisation/visualisationGrille.h"
 #include "visualisation/visualisationGraphe.h"
-#include "model/Voisinage/Voisinage.h"
 #include "model/cellule/codeCorrecteur/correcteur.h"
 #include "visualisation/codeCorrecteur/VisuCodeCorrecteur.h"
 
@@ -39,7 +38,7 @@ int main() {
     v.loopEvent();*/
 
     Graphe G(1000,typeCellule::QUOROMD);
-    G.setLambda(9);
+    G.setLambda(1);
     G.setCelluleDef(0.05);
     G.setVoisinsProche(4);
 

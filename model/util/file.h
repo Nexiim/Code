@@ -26,7 +26,8 @@ private:
     Bordure bordure;
     int* size;
     typeCellule cellule;
-    VoisinageClassique voisinnage;
+    typeVoisinage voisinnage;
+    double* argVoisinage;
     double* parametre;
     int* nbIterationMax;
     double seuil;
@@ -67,7 +68,7 @@ public:
 
     typeCellule getCellue() const;
 
-    VoisinageClassique getVoisinnage() const;
+    typeVoisinage getVoisinnage() const;
 
     double *getParametre() const;
 

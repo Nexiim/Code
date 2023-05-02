@@ -7,11 +7,13 @@
 
 #include <iostream>
 
-enum class VoisinageClassique : char{
+enum class typeVoisinage: char{
     MOORE8,
     MOORE9,
     TOOM,
-    VONNEUMAN
+    VONNEUMAN,
+    IRREGULIER,
+    PLUSPROCHE
 };
 
 enum class typeCellule{
@@ -37,6 +39,6 @@ enum class Evolution{
 
 typedef enum{DEFAILANTE,ALERTE,NORMAL} Etat;
 
-std::string ToString(VoisinageClassique v) noexcept;
+std::string ToString(typeVoisinage v) noexcept;
 
 #endif //CODE_STRUCT_H

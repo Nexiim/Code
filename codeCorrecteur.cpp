@@ -27,7 +27,7 @@ int main() {
 
     Grille G(H, W, typeCellule::CORRECTEUR);
     G.setBordure(Bordure::TORIQUE);
-    G.setVoisinage(VoisinageClassique::TOOM);
+    G.setVoisinage(typeVoisinage::TOOM);
 
     setupGrille(&G);
 

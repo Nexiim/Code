@@ -70,19 +70,35 @@ void file::loadFile(char* nameFile) {
 
             else if(categorie == "typeCellule"){
                 if (ligne == "default") cellule = typeCellule::DEFAULT;
-                else if(ligne == "QuoromD") cellule = typeCellule::QUOROMD;
+                else if(ligne == "QuorumD") cellule = typeCellule::QUOROMD;
                 else cout << "erreur sur le type de cellule" << endl;
             }
 
             else if(categorie == "voisinnage"){
                 if(topologie == Topologie::GRILLE) {
-                    if (ligne == "moore8") voisinnage = VoisinageClassique::MOORE8;
-                    else if (ligne == "moore9") voisinnage = VoisinageClassique::MOORE9;
-                    else if (ligne == "toom") voisinnage = VoisinageClassique::TOOM;
-                    else if (ligne == "vonNeumann") voisinnage = VoisinageClassique::VONNEUMAN;
+                    if (ligne == "moore8") voisinnage = typeVoisinage::MOORE8;
+                    else if (ligne == "moore9") voisinnage = typeVoisinage::MOORE9;
+                    else if (ligne == "toom") voisinnage = typeVoisinage::TOOM;
+                    else if (ligne == "vonNeumann") voisinnage = typeVoisinage::VONNEUMAN;
+                    else if (ligne == "irregulier") voisinnage == typeVoisinage::IRREGULIER;
                     else cout << "erreur de voisinnage" << endl;
                 }
-                else cout << "erreur de voisinnage sur un graphe" << endl;
+                else if(topologie == Topologie::GRAPHE){
+                    if (ligne == "plusProcheVoisin"){
+                        if (ligne.find(',') == -1) cout << "argument neccésaire pour le voisinage plus proche voisin" << endl;
+                        else{
+                            string arg1 = ligne.substr(0, ligne.find(','));
+                            ligne.erase(0, ligne.find(',') + 1);
+                            if (ligne.find(',') != -1) cout << "trop d'arguments pour le vosinage" << endl;
+                            else{
+                                argVoisinage = (double*)(::malloc(sizeof(double) * 1));
+                                argVoisinage[0] = stoi(ligne);
+                                voisinnage = typeVoisinage::PLUSPROCHE;
+                            }  
+                        }
+                    }
+                }
+                else cout << "erreur de voisinnage topologie inconnue" << endl;
             }
 
             else if(categorie == "visualisation"){
@@ -205,7 +221,7 @@ typeCellule file::getCellue() const {
     return cellule;
 }
 
-VoisinageClassique file::getVoisinnage() const {
+typeVoisinage file::getVoisinnage() const {
     return voisinnage;
 }
 

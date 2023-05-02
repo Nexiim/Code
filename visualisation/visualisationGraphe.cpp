@@ -13,7 +13,7 @@ visualisationGraphe::visualisationGraphe(Graphe *G) :visualisation(G->getWidth()
 void visualisationGraphe::affichage() {
     for (int i = 0; i < G->nbCellule(); i++) {
         if (G->getCellule(i)->getEtat() == NORMAL) SDL_SetRenderDrawColor(renderer, 0, 255, 0, 0);
-        else if (G->getCellule(i)->getEtat() == ALERTE) SDL_SetRenderDrawColor(renderer, 255, 127, 0, 0);
+        else if (G->getCellule(i)->getEtat() == ALERTE) SDL_SetRenderDrawColor(renderer, 0, 0, 255, 0);
         else SDL_SetRenderDrawColor(renderer, 255, 0, 0, 0);
 
         for (int a = 0; a < pixelSize; a++) {

@@ -18,6 +18,8 @@ public:
 
     void loopEvent();
     void affichage();
+private:
+    Grille* G;
 };
 
 

@@ -53,11 +53,11 @@ void Cellule::contamination() {
         this->etatSuivant = ALERTE;
 }
 
-void Cellule::setNbVoisinMax(VoisinageClassique v) {
-    if (v == VoisinageClassique::MOORE8) this->nbVoisinMax = 8;
-    else if (v == VoisinageClassique::MOORE9) this->nbVoisinMax = 9;
-    else if (v == VoisinageClassique::TOOM) this->nbVoisinMax = 3;
-    else if (v == VoisinageClassique::VONNEUMAN) this->nbVoisinMax = 5;
+void Cellule::setNbVoisinMax(typeVoisinage v) {
+    if (v == typeVoisinage::MOORE8) this->nbVoisinMax = 8;
+    else if (v == typeVoisinage::MOORE9) this->nbVoisinMax = 9;
+    else if (v == typeVoisinage::TOOM) this->nbVoisinMax = 3;
+    else if (v == typeVoisinage::VONNEUMAN) this->nbVoisinMax = 5;
 }
 
 
