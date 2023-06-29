@@ -12,6 +12,7 @@ enum class typeVoisinage: char{
     MOORE9,
     TOOM,
     VONNEUMAN,
+    VONNEUMAN4,
     IRREGULIER,
     PLUSPROCHE
 };
@@ -40,5 +41,7 @@ enum class Evolution{
 typedef enum{DEFAILANTE,ALERTE,NORMAL} Etat;
 
 std::string ToString(typeVoisinage v) noexcept;
+std::string ToString(typeCellule c) noexcept;
+
 
 #endif //CODE_STRUCT_H

@@ -16,6 +16,8 @@ public:
     void transition();
 
     void setLambda(double lambda);
+    void setLambdaAdaptatif();
+
     double getLambda();
     void setPreCalcul(double* preCalcul);
 

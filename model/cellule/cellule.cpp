@@ -33,7 +33,7 @@ void Cellule::resetVoisin() {
 }
 
 /*Foncttion lié à l'état de la cellule*/
-Etat Cellule::getEtat(){
+ Etat Cellule::getEtat(){
     return this->etat;
 }
 void Cellule::setEtat(Etat e){
@@ -58,6 +58,8 @@ void Cellule::setNbVoisinMax(typeVoisinage v) {
     else if (v == typeVoisinage::MOORE9) this->nbVoisinMax = 9;
     else if (v == typeVoisinage::TOOM) this->nbVoisinMax = 3;
     else if (v == typeVoisinage::VONNEUMAN) this->nbVoisinMax = 5;
+    else if (v == typeVoisinage::VONNEUMAN4) this->nbVoisinMax = 4;
+    else if (v == typeVoisinage::PLUSPROCHE) this->nbVoisinMax = this->nbVoisin();;
 }
 
 

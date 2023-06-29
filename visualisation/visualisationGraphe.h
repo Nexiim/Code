@@ -6,7 +6,7 @@
 #define CODE_VISUALISATIONGRAPHE_H
 
 #include <SDL2/SDL.h>
-#include "../model/graphe/graphe.h"
+#include "../model/graphe/graphe.cuh"
 #include "visualisation.h"
 
 class visualisationGraphe : public visualisation{

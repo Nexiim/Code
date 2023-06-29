@@ -48,7 +48,7 @@ if len(sys.argv) == 2 :
 			for v in value:
 				if "lambda" in v:
 					v = v.replace("lambda:","")
-					posLambda = valueLambda.index(float(v))
+					posLambda = valueLambda.index(float(v))	
 				if "probaDef" in v:
 					v = v.replace("probaDef:","")
 					posProbaDef = valueProbaDef.index(float(v))	
@@ -69,10 +69,10 @@ if len(sys.argv) == 2 :
 		
 			for i in range(nbProbaDef):
 				if nbProbaDef >1 :
-					axs[i].set_title("Evolution de la densité avec une probabilité de défaillance de "+str(valueProbaDef[i]))
+					axs[i].set_title("Evolution de la densité avec $\kappa = $"+str(valueProbaDef[i]))
 					axs[i].set(xlabel="nombre d'itérarions", ylabel="Population en état d'alerte(%)")
 				else:
-					axs.set_title("Evolution de la densité avec une probabilité de défaillance de "+str(valueProbaDef[i]))
+					axs.set_title("Evolution de la densité avec $\kappa = $"+str(valueProbaDef[i]))
 					axs.set(xlabel="nombre d'itérarions", ylabel="Population en état d'alerte(%)")
 				for j in range(nbLambda):
 					abs = []

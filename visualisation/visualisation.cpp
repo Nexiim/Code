@@ -7,7 +7,7 @@
 visualisation::visualisation(int width, int height) {
     this->width = width;
     this->height = height;
-    this->pixelSize = 5;
+    this->pixelSize = 8;
 }
 
 visualisation::visualisation(int width, int height,int pixelSize) {

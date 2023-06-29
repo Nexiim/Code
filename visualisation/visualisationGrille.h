@@ -6,8 +6,8 @@
 #define CODE_VISUALISATIONGRILLE_H
 
 #include <SDL2/SDL.h>
-#include "../model/graphe/graphe.h"
-#include "../model/graphe/grille.h"
+#include "../model/graphe/graphe.cuh"
+#include "../model/graphe/grille.cuh"
 #include "visualisation.h"
 
 class visualisationGrille : public visualisation{

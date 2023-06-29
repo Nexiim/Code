@@ -6,8 +6,8 @@
 #define CODE_SIMULATION_H
 
 #include <fstream>
-#include "../model/graphe/graphe.h"
-#include "../model/graphe/grille.h"
+#include "../model/graphe/graphe.cuh"
+#include "../model/graphe/grille.cuh"
 
 
 

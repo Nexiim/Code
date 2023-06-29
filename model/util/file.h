@@ -27,6 +27,7 @@ private:
     int* size;
     typeCellule cellule;
     typeVoisinage voisinnage;
+    double paramVoisinage;
     double* argVoisinage;
     double* parametre;
     int* nbIterationMax;
@@ -42,6 +43,7 @@ private:
     int nbTest;
     bool visualisation;
     int seed;
+    fstream f; 
 
 protected:
     file(){}
@@ -69,6 +71,8 @@ public:
     typeCellule getCellue() const;
 
     typeVoisinage getVoisinnage() const;
+
+    double getVoisinageParam() const;
 
     double *getParametre() const;
 

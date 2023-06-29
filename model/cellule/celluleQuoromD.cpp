@@ -19,42 +19,52 @@ CelluleQuoromD::CelluleQuoromD(double lambda, double *preCalculExp) {
 }
 
 void CelluleQuoromD::transition(){
-    if (this->etat != DEFAILANTE) {
+
+    if (this->etat != DEFAILANTE && this->nbVoisin() != 0) {
+        int N = this->nbVoisin();
         //cout << this->nbVoisin() << endl;
         int nbVoisinN = this->countVoisin(NORMAL);
-        int nbVoisinAD = this->nbVoisin() - nbVoisinN;
+        int nbVoisinAD = N - nbVoisinN;
+        Etat q;
 
-        if (nbVoisinAD == this->nbVoisin()) this->etatSuivant = ALERTE;
-        else if (nbVoisinN == this->nbVoisin()) this->etatSuivant = NORMAL;
+        if (nbVoisinN == 0) q = ALERTE;
+        else if (nbVoisinN == N) q = NORMAL;
 
         else {
             double probaN;
             if (this->preCalculExp == nullptr) {
-                auto v = (double) this->nbVoisin();
+                double v = (double) N;
                 double wn = exp(lambda * (nbVoisinN / v));
                 double wad = exp(lambda * (nbVoisinAD / v));
                 probaN = wn / (wn + wad);
-                //cout << probaN << endl;
+                
             }
             else {
                 int base = this->nbVoisinMax+1;
-                int j = this->nbVoisin();
+                int j = N;
                 int i = nbVoisinN;
                 int position = (j-1)*base+i;
                 probaN = this->preCalculExp[position];
             }
 
+            std::random_device rd;
+            std::mt19937 gen(rd());
 
-            double r = rand() / double(RAND_MAX);
+            std::bernoulli_distribution d(probaN);
 
-            if (r < probaN) this->etatSuivant = NORMAL;
-            else this->etatSuivant = ALERTE;
+            if (d(gen)) q = NORMAL;
+            else q = ALERTE;
         }
+        this->etatSuivant = q;
     }
 }
 
 void CelluleQuoromD::setLambda(double lambda) {
     this->lambda = lambda;
+}
+
+void CelluleQuoromD::setLambdaAdaptatif(){
+
 }
 
 double CelluleQuoromD::getLambda() {

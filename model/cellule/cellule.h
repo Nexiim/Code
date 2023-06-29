@@ -10,6 +10,8 @@
 #include <cmath>
 #include <iostream>
 #include "../struct/struct.h"
+#include <random>
+
 
 using namespace std;
 
@@ -31,11 +33,12 @@ class Cellule{
         void setNbVoisinMax(typeVoisinage v);
 
         virtual void transition();
-        void contamination();
+        virtual void contamination();
         void nextT();
-
-    protected:
+        
         Etat etat = NORMAL;
+    protected:
+        
         Etat etatSuivant = etat;
         vector<Cellule*> voisins;
         int nbVoisinMax;

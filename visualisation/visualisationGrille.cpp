@@ -34,10 +34,10 @@ void visualisationGrille::loopEvent() {
             affichage();
             // Events management
             if(sim){
-                if(!G->seuil(0.95)) {
+               /* if(!G->seuil(0.95)) {
                     G->MAJ();
                 }
-                else sim = !sim;
+                else sim = !sim;*/
             }
             while (SDL_PollEvent(&event)) {
                 //
@@ -56,7 +56,7 @@ void visualisationGrille::loopEvent() {
                                 G->MAJ();
                                 break;
                             case SDLK_t:
-                                G->contamination();
+                                //G->contamination();
                                 break;
                         }
                 }
